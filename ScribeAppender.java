@@ -59,6 +59,10 @@ public class ScribeAppender extends AppenderSkeleton {
   private int scribePort;
   private String scribeCategory;
 
+  // NOTE: logEntries, client, and transport are all protected by a lock on 'this.'
+
+  // The Scribe interface for sending log messages accepts a list.  This list is created
+  // once and cleared and appended when new logs are created.  The list is always size 1.
   private List<LogEntry> logEntries;
 
   private Client client;
@@ -146,16 +150,16 @@ public class ScribeAppender extends AppenderSkeleton {
   @Override
   public void append(LoggingEvent event) {
     synchronized(this) {
-      String message = String.format("%s %s", hostname, layout.format(event));
-      LogEntry entry = new LogEntry(scribeCategory, message);
-
-      logEntries.clear();
-      logEntries.add(entry);
-
       try {
+        String message = String.format("%s %s", hostname, layout.format(event));
+        LogEntry entry = new LogEntry(scribeCategory, message);
+
+        logEntries.add(entry);
         client.Log(logEntries);
       } catch (Exception e) {
-  System.err.println(StringUtils.stringifyException(e));
+        System.err.println(StringUtils.stringifyException(e));
+      } finally {
+        logEntries.clear();
       }
     }
   }

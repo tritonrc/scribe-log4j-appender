@@ -75,6 +75,7 @@ public class AsyncScribeAppender extends AsyncAppender {
       scribeAppender.setScribeHost(getScribeHost());
       scribeAppender.setScribePort(getScribePort());
       scribeAppender.setScribeCategory(getScribeCategory());
+      scribeAppender.activateOptions();
       addAppender(scribeAppender);
     }
   }
@@ -83,4 +84,5 @@ public class AsyncScribeAppender extends AsyncAppender {
   public boolean requiresLayout() {
     return true;
   }
+
 }
