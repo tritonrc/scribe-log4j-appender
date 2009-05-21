@@ -44,6 +44,15 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 /*
+ * TODO(alexlod): The current implementation only attempts to connect
+ *                when the Appender is first used.  In the case when
+ *                the Scribe server goes down, this Appender won't
+ *                attempt to reconnect.  I should imlement exponential
+ *                backoff for connection retries for each log message
+ *                the comes through when a connection is no longer open.
+ */
+
+/*
  * A Log4j Appender that writes log entries to a Scribe server.
  * By default the Scribe server is expected to run on localhost, port 1463.
  * Messages are written with a category of "hadoop".
