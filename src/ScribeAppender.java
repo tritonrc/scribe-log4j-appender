@@ -20,15 +20,14 @@
 
 package org.apache.hadoop.scribe_log4j;
 
-import com.facebook.thrift.protocol.TBinaryProtocol;
-import com.facebook.thrift.transport.TSocket;
-import com.facebook.thrift.transport.TFramedTransport;
-import com.facebook.thrift.transport.TTransportException;
-import com.facebook.thrift.TException;
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.transport.TSocket;
+import org.apache.thrift.transport.TFramedTransport;
+import org.apache.thrift.transport.TTransportException;
+import org.apache.thrift.TException;
 
 import org.apache.hadoop.scribe_log4j.thrift.scribe.Client;
 import org.apache.hadoop.scribe_log4j.thrift.LogEntry;
-import org.apache.hadoop.util.StringUtils;
 
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
@@ -143,13 +142,13 @@ public class ScribeAppender extends AppenderSkeleton {
 //        transport.open();
       }
     } catch (TTransportException e) {
-      System.err.println(StringUtils.stringifyException(e));
+      System.err.println(e.toString());
     } catch (UnknownHostException e) {
-      System.err.println(StringUtils.stringifyException(e));
+      System.err.println(e.toString());
     } catch (IOException e) {
-      System.err.println(StringUtils.stringifyException(e));
+      System.err.println(e.toString());
     } catch (Exception e) {
-      System.err.println(StringUtils.stringifyException(e));
+      System.err.println(e.toString());
     }
   }
 
@@ -166,7 +165,7 @@ public class ScribeAppender extends AppenderSkeleton {
         logEntries.add(entry);
         client.Log(logEntries);
       } catch (Exception e) {
-        System.err.println(StringUtils.stringifyException(e));
+        System.err.println(e.toString());
       } finally {
         logEntries.clear();
       }
